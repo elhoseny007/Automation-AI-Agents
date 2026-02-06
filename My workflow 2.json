@@ -1,0 +1,436 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "fromEmail": "elhosenyhassan007@gmail.com",
+        "toEmail": "shebeh007@gmail.com",
+        "subject": "This is your ATS score: ",
+        "html": "=<div style=\"direction: ltr; font-family: sans-serif; line-height: 1.6; color: #333;\">\n  {{ \n    ($node[\"If\"].json[\"content\"][\"parts\"][0][\"text\"].split(/\\d+%/)[0] + \n    $node[\"If\"].json[\"content\"][\"parts\"][0][\"text\"].match(/\\d+%/))\n    .replace(/\\*/g, '') \n  }}\n</div>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        896,
+        -48
+      ],
+      "id": "3f15eb00-2c86-46cb-a848-fc19b3e2f405",
+      "name": "Send an Email",
+      "webhookId": "45555c76-b1f1-4236-add4-0c9597492724",
+      "credentials": {
+        "smtp": {
+          "id": "vLVLovQcFt8qTj96",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ace5d055-7190-4ce4-937c-beeb434da95d",
+              "leftValue": "={{ $json.content.parts[0].text.match(/\\d+/)[0] }}",
+              "rightValue": 80,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        80,
+        64
+      ],
+      "id": "6f73989f-e105-49f2-b1db-b881f5ef072b",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "61132d39-e8ee-4392-a24a-38183caf8d64",
+              "name": "data",
+              "value": "={{ $binary.data }}",
+              "type": "binary"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -352,
+        0
+      ],
+      "id": "5cb6960a-b245-4012-af3c-04b8686a59fe",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -864,
+        -16
+      ],
+      "id": "4ddb84b3-8528-4d92-906e-f4175385743a",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "1ZFkxmQN137gF6Cy-PUFXE5PqjVyC8-bN",
+          "mode": "list",
+          "cachedResultName": "CV1.pdf",
+          "cachedResultUrl": "https://drive.google.com/file/d/1ZFkxmQN137gF6Cy-PUFXE5PqjVyC8-bN/view?usp=drivesdk"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -640,
+        -16
+      ],
+      "id": "78b9e5ff-b21b-48af-b578-c661b3495a8f",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "uDlAZZofrH7CvYdh",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "document",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "text": "just give me number of ATS test on my CV as percentage?",
+        "inputType": "binary",
+        "binaryPropertyName": "=data",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -224,
+        176
+      ],
+      "id": "8ab40d05-4c08-4036-83db-d980b8be7dc9",
+      "name": "Analyze document",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "MyMy1myJVpGaPxZm",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ace5d055-7190-4ce4-937c-beeb434da95d",
+              "leftValue": "0",
+              "rightValue": 80,
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "3542b608-9a8e-4df1-8433-fe99d64ad1c4",
+              "leftValue": "0",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -480,
+        208
+      ],
+      "id": "da8981eb-af39-4c45-b343-bd2ba64ab922",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "resource": "document",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "text": "evaluate my cv to get up 90 in ATS Score and rewrite whole new cv again",
+        "inputType": "binary",
+        "binaryPropertyName": "=data",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        304,
+        176
+      ],
+      "id": "39f9fd8b-7477-4bb9-b260-3b1d14207f5e",
+      "name": "Analyze document2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "MyMy1myJVpGaPxZm",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0AE6PNU3HN",
+          "mode": "list",
+          "cachedResultName": "social"
+        },
+        "text": "Okay, let's put your CV through an \"ATS-like\" evaluation. ATS (Applicant Tracking Systems) are designed to parse resumes for keywords, formatting, and specific information.\\n\\n## ATS Evaluation: Elhoseny Hassan - Junior AI & Machine Learning Engineer\\n\\n**Overall ATS Friendliness: Excellent**\\n\\nThis CV is extremely well-structured and rich in keywords, making it highly ATS-friendly. The formatting is clean, uses standard headings, and bullet points are effectively utilized.\\n\\n---\\n\\n### Section-by-Section Breakdown:\\n\\n1. **Contact Information:**\\n * **ATS Score: 5/5**\\n * **Analysis:** Your na...",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        384,
+        -48
+      ],
+      "id": "ef1c57f9-b82a-4677-a998-fe18c5431a4c",
+      "name": "Send a message",
+      "webhookId": "c2c5a58f-2c30-41e8-81fc-cdfc82281a8a",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "obPXl6VgxGh7Bepw",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "fileId": {
+          "__rl": true,
+          "value": "1ZFkxmQN137gF6Cy-PUFXE5PqjVyC8-bN",
+          "mode": "list",
+          "cachedResultName": "CV1.pdf",
+          "cachedResultUrl": "https://drive.google.com/file/d/1ZFkxmQN137gF6Cy-PUFXE5PqjVyC8-bN/view?usp=drivesdk"
+        },
+        "newUpdatedFileName": "cv1_enhanced_n8n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        512,
+        176
+      ],
+      "id": "1a6daf18-9954-47a3-9ddc-7df7f6354021",
+      "name": "Update file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "uDlAZZofrH7CvYdh",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "983cc905-b66c-4847-9ccb-32c6aa23e7d0",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -864,
+        -176
+      ],
+      "id": "d6647d92-ee59-4538-ae4c-0d55fe781287",
+      "name": "Webhook",
+      "webhookId": "983cc905-b66c-4847-9ccb-32c6aa23e7d0"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Send an Email": {
+      "main": [
+        []
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Analyze document2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Analyze document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze document": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze document2": {
+      "main": [
+        [
+          {
+            "node": "Update file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Send an Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update file": {
+      "main": [
+        [
+          {
+            "node": "Analyze document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "3c25eb8f-c255-4e16-b492-e89222b1c431",
+  "meta": {
+    "instanceId": "262d5f1d7f05fd540b6d3c5030e8f30001eea63627d55031c783e43b127ca5bd"
+  },
+  "id": "OrQG0uOe053n2BmJp19pp",
+  "tags": []
+}
