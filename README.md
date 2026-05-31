@@ -12,5 +12,4 @@ Next-Gen Conversational Intelligence Platform built with **Streamlit**, **Groq (
 
 ### 1. Clone the repository
 ```bash
-git clone [https://github.com/YOUR_USERNAME/Stock-AI-Assistant.git](https://github.com/YOUR_USERNAME/Stock-AI-Assistant.git)
-cd Stock-AI-Assistant
+Output video in Linkedin in it [https://www.linkedin.com/posts/elhoseny-hassan-65561b191_generativeai-aiagents-llamaindex-activity-7466694799182426112-q59S?utm_source=share&utm_medium=member_desktop&rcm=ACoAAC0etuEBDUKexoNsOubbe98ZPwS3KnVybgM] 
