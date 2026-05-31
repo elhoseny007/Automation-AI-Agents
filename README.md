@@ -1,6 +1,6 @@
 # 📈 Stock AI Assistant
 
-Next-Gen Conversational Intelligence Platform built with **Streamlit**, **Groq (Llama 3.3 70B)**, **LlamaIndex**, and **Model Context Protocol (MCP)**. This assistant seamlessly handles general chat, local multi-CSV dataset semantic analysis, and live stock market data operations via connected MCP tools.
+Next-Gen Conversational Intelligence Platform built with **Streamlit**, **Groq (Llama 3.3 70B)**, **LlamaIndex**, and **Model Context Protocol (MCP)**. This assistant seamlessly handles general chat, local multi-CSV dataset semantic analysis, and live stock market data operations via connected MCP tools and recommendation.
 
 ## ✨ Features
 - **Premium UI:** Tailored dark-mode trading theme with responsive components.
